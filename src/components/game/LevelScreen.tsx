@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Float, Sparkles, Environment, Text3D, Box, Sphere } from '@react-three/drei';
+import { OrbitControls, Float, Sparkles, Environment, Box, Sphere } from '@react-three/drei';
 import { Button } from '@/components/ui/button';
 import { useGameStore } from '@/stores/gameStore';
 import { ArrowLeft, Star, Play, Pause, RotateCcw, Lightbulb, Heart, Timer } from 'lucide-react';

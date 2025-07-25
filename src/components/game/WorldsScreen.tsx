@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Float, Sparkles, Environment, Text3D } from '@react-three/drei';
+import { OrbitControls, Float, Sparkles, Environment } from '@react-three/drei';
 import { Button } from '@/components/ui/button';
 import { useGameStore } from '@/stores/gameStore';
 import { ArrowLeft, Star, Lock, Play, Trophy, Brain, Clock } from 'lucide-react';
@@ -76,19 +76,14 @@ const WorldPortal = ({ world, position, onClick, isLocked }: {
 const WorldLabel = ({ text, position }: { text: string; position: [number, number, number] }) => {
   return (
     <Float speed={1} rotationIntensity={0.1} floatIntensity={0.3}>
-      <Text3D
-        font="/fonts/comic.json"
-        size={0.3}
-        height={0.05}
-        position={[position[0] - text.length * 0.1, position[1] - 2, position[2]]}
-      >
-        {text}
+      <mesh position={[position[0] - text.length * 0.1, position[1] - 2, position[2]]}>
+        <boxGeometry args={[text.length * 0.2, 0.3, 0.05]} />
         <meshStandardMaterial 
           color="#ffffff"
           emissive="#ffffff"
           emissiveIntensity={0.2}
         />
-      </Text3D>
+      </mesh>
     </Float>
   );
 };
