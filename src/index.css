@@ -2,41 +2,85 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
+/* PuzzleToon: The Brainiverse - Complete Design System
+High-quality cartoon 3D game with dopamine-triggering visuals
 */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Core Brand Colors - Vibrant cartoon palette */
+    --background: 210 30% 8%;
+    --foreground: 210 40% 98%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 210 25% 12%;
+    --card-foreground: 210 40% 98%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 210 25% 12%;
+    --popover-foreground: 210 40% 98%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Primary - Electric Cyan (Brain Energy) */
+    --primary: 180 100% 50%;
+    --primary-foreground: 210 25% 12%;
+    --primary-glow: 180 100% 70%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Secondary - Purple Magic */
+    --secondary: 270 75% 60%;
+    --secondary-foreground: 210 40% 98%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Joy Emotion - Bright Orange */
+    --joy: 30 100% 60%;
+    --joy-foreground: 210 25% 12%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Curiosity Emotion - Electric Blue */
+    --curiosity: 220 100% 60%;
+    --curiosity-foreground: 210 40% 98%;
 
-    --destructive: 0 84.2% 60.2%;
+    /* Sadness Emotion - Soft Purple */
+    --sadness: 260 60% 65%;
+    --sadness-foreground: 210 25% 12%;
+
+    /* Anger Emotion - Fiery Red */
+    --anger: 0 100% 65%;
+    --anger-foreground: 210 40% 98%;
+
+    /* Success/Progress - Neon Green */
+    --success: 120 100% 50%;
+    --success-foreground: 210 25% 12%;
+
+    /* Warning/Hint - Golden Yellow */
+    --warning: 45 100% 55%;
+    --warning-foreground: 210 25% 12%;
+
+    --muted: 210 25% 15%;
+    --muted-foreground: 210 20% 70%;
+
+    --accent: 270 75% 60%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 100% 65%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 210 25% 20%;
+    --input: 210 25% 15%;
+    --ring: 180 100% 50%;
 
-    --radius: 0.5rem;
+    --radius: 1rem;
+
+    /* Game-specific gradients */
+    --gradient-cosmic: linear-gradient(135deg, hsl(270 75% 60%), hsl(180 100% 50%));
+    --gradient-energy: linear-gradient(45deg, hsl(180 100% 50%), hsl(180 100% 70%));
+    --gradient-joy: linear-gradient(135deg, hsl(30 100% 60%), hsl(45 100% 55%));
+    --gradient-mystery: linear-gradient(225deg, hsl(260 60% 65%), hsl(270 75% 60%));
+
+    /* Shadows and glows */
+    --shadow-neon: 0 0 20px hsl(var(--primary) / 0.5);
+    --shadow-cosmic: 0 10px 40px hsl(270 75% 60% / 0.3);
+    --shadow-joy: 0 5px 20px hsl(30 100% 60% / 0.4);
+
+    /* Animations */
+    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-fast: all 0.15s ease-out;
 
     --sidebar-background: 0 0% 98%;
 
@@ -100,6 +144,65 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground overflow-hidden;
+    font-family: 'Segoe UI', 'Comic Sans MS', cursive, system-ui;
+  }
+
+  /* Game-specific animations */
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: var(--shadow-neon); }
+    50% { box-shadow: 0 0 30px hsl(var(--primary) / 0.8); }
+  }
+
+  @keyframes bounce-in {
+    0% { transform: scale(0.3) rotate(-10deg); opacity: 0; }
+    50% { transform: scale(1.05) rotate(5deg); }
+    70% { transform: scale(0.95) rotate(-2deg); }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+
+  @keyframes cosmic-rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  @keyframes energy-pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+  }
+
+  /* Utility classes for game elements */
+  .game-button {
+    @apply transition-all duration-300 hover:scale-105 active:scale-95;
+    animation: var(--transition-bounce);
+  }
+
+  .floating-element {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .cosmic-glow {
+    box-shadow: var(--shadow-cosmic);
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  .energy-orb {
+    animation: energy-pulse 1.5s ease-in-out infinite;
+  }
+
+  .bounce-enter {
+    animation: bounce-in 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+
+  /* Disable text selection in game */
+  .game-ui {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
   }
 }
