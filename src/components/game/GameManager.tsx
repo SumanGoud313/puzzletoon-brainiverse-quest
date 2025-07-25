@@ -3,9 +3,11 @@ import { useGameStore } from '@/stores/gameStore';
 import HomeScreen from './HomeScreen';
 import WorldsScreen from './WorldsScreen';
 import LevelScreen from './LevelScreen';
+import LevelSelectScreen from './LevelSelectScreen';
 import CharacterScreen from './CharacterScreen';
 import ShopScreen from './ShopScreen';
 import SettingsScreen from './SettingsScreen';
+import AudioSystem from './AudioSystem';
 
 const GameManager: React.FC = () => {
   const { currentScreen, settings } = useGameStore();
@@ -31,6 +33,8 @@ const GameManager: React.FC = () => {
         return <HomeScreen />;
       case 'worlds':
         return <WorldsScreen />;
+      case 'level-select':
+        return <LevelSelectScreen />;
       case 'level':
         return <LevelScreen />;
       case 'character':
@@ -45,9 +49,11 @@ const GameManager: React.FC = () => {
   };
 
   return (
-    <div className="game-container">
-      {renderCurrentScreen()}
-    </div>
+    <AudioSystem>
+      <div className="game-container">
+        {renderCurrentScreen()}
+      </div>
+    </AudioSystem>
   );
 };
 

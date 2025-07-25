@@ -51,7 +51,7 @@ export interface Level {
 
 export interface GameState {
   // Game status
-  currentScreen: 'home' | 'worlds' | 'level' | 'character' | 'shop' | 'settings' | 'pause';
+  currentScreen: 'home' | 'worlds' | 'level-select' | 'level' | 'character' | 'shop' | 'settings' | 'pause';
   currentWorld: number | null;
   currentLevel: string | null;
   isPlaying: boolean;

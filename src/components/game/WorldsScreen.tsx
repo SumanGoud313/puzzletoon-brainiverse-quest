@@ -92,6 +92,7 @@ const WorldsScreen: React.FC = () => {
   const { 
     setCurrentScreen, 
     setCurrentWorld, 
+    setCurrentLevel,
     worlds, 
     player 
   } = useGameStore();
@@ -104,7 +105,7 @@ const WorldsScreen: React.FC = () => {
     const world = worlds.find(w => w.id === worldId);
     if (world && world.unlocked) {
       setCurrentWorld(worldId);
-      setCurrentScreen('level');
+      setCurrentScreen('level-select');
     }
   };
 

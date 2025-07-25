@@ -4,6 +4,7 @@ import { OrbitControls, Float, Sparkles, Environment, Box, Sphere } from '@react
 import { Button } from '@/components/ui/button';
 import { useGameStore } from '@/stores/gameStore';
 import { ArrowLeft, Star, Play, Pause, RotateCcw, Lightbulb, Heart, Timer } from 'lucide-react';
+import { useAudio } from './AudioSystem';
 import * as THREE from 'three';
 
 // Game Character Component
@@ -148,6 +149,8 @@ const LevelScreen: React.FC = () => {
     changeEmotion
   } = useGameStore();
 
+  const { playSoundEffect } = useAudio();
+
   const [gameTime, setGameTime] = useState(0);
   const [collectedStars, setCollectedStars] = useState(0);
   const [collectedFragments, setCollectedFragments] = useState(0);
@@ -156,6 +159,7 @@ const LevelScreen: React.FC = () => {
     orbsCollected: 0,
     emotionUsed: false
   });
+  const [showCelebration, setShowCelebration] = useState(false);
 
   const currentWorldData = worlds.find(w => w.id === currentWorld);
   const currentLevelData = currentWorldData?.levels.find(l => l.id === currentLevel);
@@ -171,13 +175,15 @@ const LevelScreen: React.FC = () => {
   }, [isPlaying, isPaused]);
 
   const handleBackClick = () => {
-    setCurrentScreen('worlds');
+    playSoundEffect('click');
+    setCurrentScreen('level-select');
     setCurrentLevel(null);
     setIsPlaying(false);
     setIsPaused(false);
   };
 
   const handlePlayPause = () => {
+    playSoundEffect('click');
     if (!isPlaying) {
       setIsPlaying(true);
       setIsPaused(false);
@@ -207,34 +213,43 @@ const LevelScreen: React.FC = () => {
   };
 
   const handleEmotionChange = (emotion: 'joy' | 'curiosity' | 'sadness' | 'anger') => {
+    playSoundEffect('success');
     changeEmotion(emotion);
     setPuzzleState(prev => ({ ...prev, emotionUsed: true }));
   };
 
   const handlePuzzleInteraction = (type: 'block' | 'orb') => {
     if (type === 'block') {
+      playSoundEffect('click');
       setPuzzleState(prev => ({ ...prev, blocksActivated: prev.blocksActivated + 1 }));
     } else if (type === 'orb') {
+      playSoundEffect('collect');
       setPuzzleState(prev => ({ ...prev, orbsCollected: prev.orbsCollected + 1 }));
       setCollectedFragments(prev => prev + 1);
     }
 
     // Check win condition
-    if (puzzleState.blocksActivated >= 2 && puzzleState.orbsCollected >= 2 && puzzleState.emotionUsed) {
-      handleLevelComplete();
+    if (puzzleState.blocksActivated >= 1 && puzzleState.orbsCollected >= 1 && puzzleState.emotionUsed) {
+      setTimeout(() => handleLevelComplete(), 1000); // Small delay for satisfaction
     }
   };
 
   const handleLevelComplete = () => {
+    playSoundEffect('complete');
+    setShowCelebration(true);
     const stars = Math.min(3, Math.floor((180 - gameTime) / 60) + 1); // Time-based scoring
     const brainStars = stars * 10;
     
     if (currentLevel) {
       completeLevel(currentLevel, stars, gameTime, brainStars, collectedFragments);
+      
+      // Show celebration for a moment before returning
+      setTimeout(() => {
+        setIsPlaying(false);
+        setShowCelebration(false);
+        setCurrentScreen('level-select');
+      }, 3000);
     }
-    
-    setIsPlaying(false);
-    setCurrentScreen('worlds');
   };
 
   const formatTime = (seconds: number) => {
@@ -445,6 +460,41 @@ const LevelScreen: React.FC = () => {
                   Exit Level
                 </Button>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* Celebration Overlay */}
+        {showCelebration && (
+          <div className="absolute inset-0 bg-success/20 backdrop-blur-sm flex items-center justify-center animate-fade-in">
+            <div className="text-center">
+              <div className="text-6xl mb-4 animate-scale-in">🎉</div>
+              <h2 className="text-4xl font-bold text-success mb-4 animate-fade-in">Level Complete!</h2>
+              <div className="flex justify-center gap-2 mb-4">
+                {[1, 2, 3].map((star) => (
+                  <Star
+                    key={star}
+                    className={`w-8 h-8 animate-scale-in ${
+                      star <= Math.min(3, Math.floor((180 - gameTime) / 60) + 1) 
+                        ? 'text-warning fill-warning' 
+                        : 'text-muted-foreground'
+                    }`}
+                    style={{ animationDelay: `${star * 0.2}s` }}
+                  />
+                ))}
+              </div>
+              <div className="text-lg text-muted-foreground animate-fade-in">
+                +{Math.min(3, Math.floor((180 - gameTime) / 60) + 1) * 10} Brain Stars
+              </div>
+            </div>
+            <div className="absolute inset-0 pointer-events-none">
+              <Sparkles 
+                count={50} 
+                scale={[10, 10, 10]} 
+                size={3} 
+                speed={2}
+                color="#f59e0b"
+              />
             </div>
           </div>
         )}
