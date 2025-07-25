@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Text3D, Float, Sparkles, Environment } from '@react-three/drei';
+import { OrbitControls, Float, Sparkles, Environment } from '@react-three/drei';
 import { Button } from '@/components/ui/button';
 import { useGameStore } from '@/stores/gameStore';
 import { Play, Settings, Trophy, User, ShoppingBag, Volume2, VolumeX } from 'lucide-react';
@@ -20,26 +20,16 @@ const GameLogo = () => {
   return (
     <group ref={meshRef}>
       <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
-        <Text3D
-          font="/fonts/comic.json"
-          size={1.5}
-          height={0.3}
-          curveSegments={12}
-          bevelEnabled
-          bevelThickness={0.1}
-          bevelSize={0.05}
-          bevelOffset={0}
-          bevelSegments={5}
-          position={[-4, 0, 0]}
-        >
-          PuzzleToon
+        {/* Simplified 3D Text using boxes */}
+        <mesh position={[-2, 0, 0]}>
+          <boxGeometry args={[3, 1, 0.2]} />
           <meshStandardMaterial 
             color="#00ffff" 
             emissive="#004444"
             roughness={0.3}
             metalness={0.8}
           />
-        </Text3D>
+        </mesh>
       </Float>
       
       {/* Brain icon representation */}
